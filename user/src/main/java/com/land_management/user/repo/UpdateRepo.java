@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface UpdateRepo extends JpaRepository<UpdateRepo,Long> {
+public interface UpdateRepo extends JpaRepository<UserUpdateRequest,Long> {
     List<UserUpdateRequest> findByStatus(UpdateRequestStatus status);
 }

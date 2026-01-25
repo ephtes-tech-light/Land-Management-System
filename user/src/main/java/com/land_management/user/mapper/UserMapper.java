@@ -1,5 +1,9 @@
 package com.land_management.user.mapper;
 
+import com.land_management.user.dto.RegistrationDto;
+import com.land_management.user.dto.UserResponseDto;
+import com.land_management.user.model.User;
+
 import java.time.LocalDateTime;
 
 public class UserMapper {

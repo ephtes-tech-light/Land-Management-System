@@ -11,9 +11,11 @@ import com.land_management.user.model.User;
 import com.land_management.user.model.UserUpdateRequest;
 import com.land_management.user.repo.UpdateRepo;
 import com.land_management.user.repo.UserRepo;
+import com.land_management.user.status.UpdateRequestStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,12 +30,25 @@ public class UserService {
     private final UserRepo userRepository;
     private final UpdateRepo updateRepo;
 
+    @Autowired
+    private KeycloakService keycloakService;
 
-
+    @Transactional
     public void register(RegistrationDto dto) {
         validateUniqueness(dto);
-        log.info("Validation uniquness ");
-        log.info("keycloak regiteration successful ");
+        log.debug("Validation uniqueness ");
+        String keycloakId= keycloakService.createKeycloakUser(dto);
+        log.debug("keycloak registration successful ");
+
+        try {
+            User user=UserMapper.toEntity(dto);
+            user.setKeycloakId(keycloakId);
+            User savedUser=userRepository.save(user);
+        }
+        catch (Exception e) {
+            keycloakService.rollbackUser(keycloakId);
+            throw new RuntimeException("Registration failed: Database synchronization error.");
+        }
 
     }
 
@@ -79,8 +94,6 @@ public class UserService {
         ur.setLastName(dto.getLastName());
         ur.setAddress(dto.getAddress());
         ur.setUpdatedAt(LocalDateTime.now());
-        log.info("seted ur from dto");
-
         log.info("saved to update repo");
         return updateRepo.save(ur);
     }
