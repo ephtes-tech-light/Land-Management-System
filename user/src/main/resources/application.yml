@@ -1,0 +1,42 @@
+server:
+  port: 8081
+
+spring:
+  # --- PostgreSQL Configuration (For User Profiles & Land Data) ---
+  datasource:
+    url: jdbc:postgresql://localhost:5432/land_management_db
+    username: my_user
+    password: my_password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # --- Security & Keycloak Redirect Flow Configuration ---
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: land-management-client
+            client-secret: tBv4Yt5XuL25Nth66iQmlhl8jKjRh0An
+            scope: openid, profile, email
+            authorization-grant-type: authorization_code
+
+            redirect-uri: "http://localhost:8081/login/oauth2/code/keycloak"
+        provider:
+          keycloak:
+            # Discovery endpoint for Keycloak realm
+            issuer-uri: http://localhost:8080/realms/land-management-realm
+
+# --- Custom Properties for your Registration API ---
+keycloak-admin:
+  server-url: http://localhost:8080
+  realm: land-management-
+  client-id: admin-cli-client
+  client-secret: lJhawpT8Uv7tiFEiXorPTWoR5D5U0Ydl

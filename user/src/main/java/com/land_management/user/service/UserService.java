@@ -2,7 +2,15 @@ package com.land_management.user.service;
 
 
 import com.land_management.user.dto.RegistrationDto;
+import com.land_management.user.dto.UpdateUserDto;
+import com.land_management.user.dto.UserResponseDto;
+import com.land_management.user.exception.DuplicateResourceException;
+import com.land_management.user.exception.NotFoundException;
+import com.land_management.user.mapper.UserMapper;
+import com.land_management.user.model.User;
+import com.land_management.user.model.UserUpdateRequest;
 import com.land_management.user.repo.UpdateRepo;
+import com.land_management.user.repo.UserRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,22 +25,16 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UpdateRepo userRepository;
+    private final UserRepo userRepository;
     private final UpdateRepo updateRepo;
-    private final KeyCloakService keyCloakService;
+
 
 
     public void register(RegistrationDto dto) {
         validateUniqueness(dto);
         log.info("Validation uniquness ");
-        keyCloakService.registerUser(dto.getUsername(),dto.getEmail(),
-                dto.getPassword());
         log.info("keycloak regiteration successful ");
 
-        /*User user = UserMapper.toEntity(dto);
-        user.setKeycloakId(kcUserId);
-        User saved = userRepository.save(user);
-        return UserMapper.toResponse(saved);*/
     }
 
     private void validateUniqueness(RegistrationDto registrationDTO){
