@@ -27,7 +27,7 @@ import java.util.List;
             return ResponseEntity.ok("Succesful");
         }
 
-        @GetMapping("/{id}")
+        @GetMapping("/getbyid/{id}")
         public ResponseEntity<UserResponseDto> getById(@PathVariable Long id){
             return ResponseEntity.ok(userService.getUserById(id));
         }

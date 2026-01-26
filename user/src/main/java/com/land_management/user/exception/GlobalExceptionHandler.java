@@ -64,6 +64,7 @@ public class GlobalExceptionHandler {
     }
 
     //Triggered when the keycloak registration service failed
+
     @ExceptionHandler(KeycloakCreationException.class)
     public ResponseEntity<ApiError> keycloakFailed(KeycloakCreationException ex,
                                                    HttpServletRequest request){
@@ -77,6 +78,21 @@ public class GlobalExceptionHandler {
                 .build();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ApiError> userAlreadyExist(UserAlreadyExistsException ex,
+                                                   HttpServletRequest request){
+        ApiError error=ApiError.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .error(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
+                .message(ex.getMessage())
+                .path(request.getRequestURI())
+                .code("Keycloak_Error")
+                .build();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
+
 
     //Triggered when the database rejects an insert/update (e.g., duplicate email because of unique constraint)
 

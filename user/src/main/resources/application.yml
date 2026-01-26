@@ -17,9 +17,11 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
-  # --- Security & Keycloak Redirect Flow Configuration ---
   security:
     oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/land-management
       client:
         registration:
           keycloak:
@@ -32,11 +34,17 @@ spring:
         provider:
           keycloak:
             # Discovery endpoint for Keycloak realm
-            issuer-uri: http://localhost:8080/realms/land-management-realm
+            issuer-uri: http://localhost:8080/realms/land-management
 
 # --- Custom Properties for your Registration API ---
 keycloak-admin:
   server-url: http://localhost:8080
-  realm: land-management-
-  client-id: admin-cli-client
-  client-secret: lJhawpT8Uv7tiFEiXorPTWoR5D5U0Ydl
+  realm: land-management
+  client-id: user-service
+  client-secret: LkHXfQjwNOdAEkQjtQMP5ESVjxrM87Hj
+
+debug: true
+
+logging:
+  level:
+    org.springframework.security: DEBUG
