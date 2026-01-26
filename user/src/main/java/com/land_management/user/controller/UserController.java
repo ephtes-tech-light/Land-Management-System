@@ -27,35 +27,9 @@ import java.util.List;
             return ResponseEntity.ok("Succesful");
         }
 
-        @GetMapping("/getbyid/{id}")
-        public ResponseEntity<UserResponseDto> getById(@PathVariable Long id){
-            return ResponseEntity.ok(userService.getUserById(id));
-        }
-
         @PostMapping("/updateRequest")
         public ResponseEntity<UserUpdateRequest> updateProfile(@RequestBody UpdateUserDto dto){
             return ResponseEntity.ok(userService.updateUserDto(dto));
-        }
-
-
-
-        @PutMapping("/approve/{id}")
-        public ResponseEntity<UserResponseDto> approve(@PathVariable Long id){
-            return ResponseEntity.ok(userService.approveUserUpdate(id));
-        }
-        @PutMapping("/rejected/{id}")
-        public ResponseEntity<String> reject(@PathVariable Long id){
-            return ResponseEntity.ok(userService.rejectUpdateRequest(id));
-        }
-        @GetMapping("/getUsers")
-        public ResponseEntity<List<UserResponseDto>> allUser(){
-
-            log.info("calling get all user");
-            return ResponseEntity.ok(userService.gellAllUser());
-        }
-        @GetMapping("/listPending")
-        public ResponseEntity<List<UserUpdateRequest>> pendings(){
-            return ResponseEntity.ok(userService.getPending());
         }
 
     }

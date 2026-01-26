@@ -43,7 +43,7 @@ public class UserService {
         try {
             User user=UserMapper.toEntity(dto);
             user.setKeycloakId(keycloakId);
-            User savedUser=userRepository.save(user);
+            userRepository.save(user);
         }
         catch (Exception e) {
             keycloakService.rollbackUser(keycloakId);
@@ -67,17 +67,6 @@ public class UserService {
         }
 
     }
-    public List<UserResponseDto> gellAllUser(){
-        return userRepository.findAll().stream().map(UserMapper::toResponse)
-                .collect(Collectors.toList());
-    }
-
-    public UserResponseDto getUserById(Long id){
-        User user=userRepository.findById(id)
-                .orElseThrow(()->new NotFoundException("User Not Found"));
-        return UserMapper.toResponse(user);
-    }
-
 
     @Transactional
     public UserUpdateRequest updateUserDto(UpdateUserDto dto){
@@ -97,49 +86,4 @@ public class UserService {
         log.info("saved to update repo");
         return updateRepo.save(ur);
     }
-
-    @Transactional
-    public UserResponseDto approveUserUpdate(Long requestId){
-        UserUpdateRequest userUpdateRequest=updateRepo.findById(requestId).orElseThrow(
-                ()->new NotFoundException("User Not Found"));
-        if (userUpdateRequest.getStatus()== UpdateRequestStatus.APPROVED ||
-                userUpdateRequest.getStatus()==UpdateRequestStatus.REJECTED){
-            throw new IllegalStateException("Update request already processed");
-        }
-        User user=userRepository.findById(requestId).orElseThrow(()->
-                new NotFoundException("User not found"));
-        user.setAddress(userUpdateRequest.getAddress());
-        user.setFirstName(userUpdateRequest.getFirstName());
-        user.setLastName(userUpdateRequest.getLastName());
-        user.setMiddleName(userUpdateRequest.getMiddleName());
-        user.setPhoneNumber(userUpdateRequest.getPhoneNumber());
-        user.setNationalId(userUpdateRequest.getNationalId());
-        userRepository.save(user);
-
-        userUpdateRequest.setStatus(UpdateRequestStatus.APPROVED);
-        userUpdateRequest.setUpdatedAt(LocalDateTime.now());
-        updateRepo.save(userUpdateRequest);
-        return UserMapper.toResponse(user);
-
-    }
-
-    public List<UserUpdateRequest> getPending(){
-        return updateRepo.findByStatus(UpdateRequestStatus.PENDING);
-    }
-    @Transactional
-    public String rejectUpdateRequest(Long requestId) {
-        UserUpdateRequest request = updateRepo.findById(requestId)
-                .orElseThrow(() -> new NotFoundException("Update request not found"));
-
-        if (request.getStatus()== UpdateRequestStatus.APPROVED ||
-                request.getStatus()==UpdateRequestStatus.REJECTED) {
-            throw new IllegalStateException("Update request already processed");
-        }
-
-        request.setStatus(UpdateRequestStatus.REJECTED);
-        request.setUpdatedAt(LocalDateTime.now());
-        updateRepo.save(request);
-        return "Rejected Successfully";
-    }
-
 }
