@@ -1,5 +1,6 @@
 package com.land_management.user.dto;
 
+import com.land_management.user.status.UpdateRequestStatus;
 import lombok.Builder;
 import lombok.Data;
 
@@ -24,7 +25,7 @@ public class UserResponseDto {
 
     private String nationalId;
 
-    private String status;
+    private UpdateRequestStatus status;
 
     private String role;
 

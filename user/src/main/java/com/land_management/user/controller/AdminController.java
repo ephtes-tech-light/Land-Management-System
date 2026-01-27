@@ -4,6 +4,7 @@ import com.land_management.user.dto.UserResponseDto;
 import com.land_management.user.model.UserUpdateRequest;
 import com.land_management.user.service.AdminService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class AdminController {
-    AdminService adminService;
+    private final AdminService adminService;
 
 
     @PutMapping("/reject/{id}")
@@ -26,9 +27,14 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getPending());
     }
 
-    @PutMapping("/approve/{id}")
+    @PutMapping("/approveUserUpdate/{id}")
     public ResponseEntity<UserResponseDto> approve(@PathVariable Long id){
         return ResponseEntity.ok(adminService.approveUserUpdate(id));
+    }
+
+    @PutMapping("/approveUser/{id}")
+    public ResponseEntity<String> approveUser(@PathVariable Long id){
+        return new ResponseEntity<>(adminService.approveUser(id), HttpStatus.OK);
     }
 
     @GetMapping("/getbyid/{id}")

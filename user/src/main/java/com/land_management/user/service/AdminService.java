@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AdminService {
-    UpdateRepo updateRepo;
-    UserRepo userRepo;
+    private final UpdateRepo updateRepo;
+    private final UserRepo userRepo;
 
     @Transactional
     public String rejectUpdateRequest(Long requestId) {
@@ -65,6 +65,12 @@ public class AdminService {
         updateRepo.save(userUpdateRequest);
         return UserMapper.toResponse(user);
 
+    }
+    public String approveUser(Long id){
+        User user=userRepo.findById(id).orElseThrow(()->new NotFoundException("User not found"));
+        user.setStatus(UpdateRequestStatus.APPROVED);
+        userRepo.save(user);
+        return "Approved Successfully";
     }
 
     public UserResponseDto getUserById(Long id){

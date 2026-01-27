@@ -3,6 +3,7 @@ package com.land_management.user.mapper;
 import com.land_management.user.dto.RegistrationDto;
 import com.land_management.user.dto.UserResponseDto;
 import com.land_management.user.model.User;
+import com.land_management.user.status.UpdateRequestStatus;
 
 import java.time.LocalDateTime;
 
@@ -20,7 +21,7 @@ public class UserMapper {
         user.setNationalId(dto.getNationalId());
         user.setPhoneNumber(dto.getPhoneNumber());
         user.setRole("USER");
-        user.setStatus("PENDING_VERIFICATION");
+        user.setStatus(UpdateRequestStatus.PENDING);
         user.setCreatedAt(LocalDateTime.now());
         return user;
     }

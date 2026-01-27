@@ -1,5 +1,6 @@
 package com.land_management.user.model;
 
+import com.land_management.user.status.UpdateRequestStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -51,7 +52,9 @@ public class User {
 
     @Builder.Default
     @Column(nullable = false)
-    private String status="PENDING_VERIFICATION";
+    @Enumerated(EnumType.STRING)
+    private UpdateRequestStatus status = UpdateRequestStatus.PENDING;
+
 
     @Builder.Default
     @Column(nullable = false)

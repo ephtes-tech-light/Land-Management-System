@@ -17,7 +17,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         auth-> auth.
                                 requestMatchers(HttpMethod.POST,"/api/user/register").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/api/user/getbyid/**").permitAll()
+                                .requestMatchers(HttpMethod.PUT,"/api/admin/**").permitAll()
                                 .anyRequest().authenticated()
                 ).oauth2ResourceServer(
                         oauth->oauth.jwt(jwt->{}));
