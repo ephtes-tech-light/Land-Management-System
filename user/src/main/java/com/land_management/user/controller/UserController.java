@@ -6,19 +6,26 @@ import com.land_management.user.dto.UpdateUserDto;
 import com.land_management.user.dto.UserResponseDto;
 import com.land_management.user.model.UserUpdateRequest;
 import com.land_management.user.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
-    @Slf4j
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+@Slf4j
     @RestController
     @RequestMapping("/api/user")
     @RequiredArgsConstructor
     public class UserController {
         private final UserService userService;
+
 
         @PostMapping("/register")
         public ResponseEntity<String> register(@Valid @RequestBody RegistrationDto registrationDto){
@@ -31,5 +38,7 @@ import java.util.List;
         public ResponseEntity<UserUpdateRequest> updateProfile(@RequestBody UpdateUserDto dto){
             return ResponseEntity.ok(userService.updateUserDto(dto));
         }
+
+
 
     }

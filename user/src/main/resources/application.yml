@@ -2,6 +2,11 @@ server:
   port: 8081
 
 spring:
+  web:
+    resources:
+      add-mappings: true
+
+
   # --- PostgreSQL Configuration (For User Profiles & Land Data) ---
   datasource:
     url: jdbc:postgresql://localhost:5432/land_management_db
@@ -22,20 +27,6 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8080/realms/land-management
-      client:
-        registration:
-          keycloak:
-            client-id: land-management-client
-            client-secret: tBv4Yt5XuL25Nth66iQmlhl8jKjRh0An
-            scope: openid, profile, email
-            authorization-grant-type: authorization_code
-
-            redirect-uri: "http://localhost:8081/login/oauth2/code/keycloak"
-        provider:
-          keycloak:
-            # Discovery endpoint for Keycloak realm
-            issuer-uri: http://localhost:8080/realms/land-management
-
 # --- Custom Properties for your Registration API ---
 keycloak-admin:
   server-url: http://localhost:8080
