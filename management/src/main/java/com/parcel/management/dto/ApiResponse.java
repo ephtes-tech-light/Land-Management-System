@@ -1,5 +1,4 @@
 package com.parcel.management.dto;
-package com.land.parcel.dto;
 
 import lombok.Builder;
 import lombok.Data;
