@@ -1,5 +1,8 @@
 package com.parcel.management.controller;
 
+import com.parcel.management.dto.LandRequestDto;
+import com.parcel.management.dto.LandResponseDto;
+import com.parcel.management.service.LandService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -30,7 +33,7 @@ public class LandController {
     }
 
     @PutMapping("/updateLand/{id}")
-    public ResponseEntity<LandResponseDto> updateLand(@RequestBody LandRequestDto landRequestDto,@PathVariable Long id){
+    public ResponseEntity<LandResponseDto> updateLand(@RequestBody LandRequestDto landRequestDto, @PathVariable Long id){
         return ResponseEntity.ok(landService.updateLand(id, landRequestDto));
     }
 
@@ -41,7 +44,7 @@ public class LandController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<LandResponseDto>> findByLocation(@RequestParam double longitude,@RequestParam double latitude){
+    public ResponseEntity<List<LandResponseDto>> findByLocation(@RequestParam double longitude, @RequestParam double latitude){
         return ResponseEntity.ok(landService.findLandByLocation(longitude,latitude));
     }
 

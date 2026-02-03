@@ -1,5 +1,6 @@
 package com.parcel.management.model;
 
+import com.parcel.management.enumirator.LandType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
