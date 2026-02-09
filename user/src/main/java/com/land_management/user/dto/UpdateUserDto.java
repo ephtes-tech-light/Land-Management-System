@@ -6,10 +6,12 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 @Builder
 public class UpdateUserDto {
-    private Long userId;
+    private UUID userId;
     private String firstName;
     private String middleName;
     private String lastName;

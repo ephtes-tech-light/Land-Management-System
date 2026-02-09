@@ -1,22 +1,23 @@
 package com.land_management.user.model;
 
-import com.land_management.user.status.UpdateRequestStatus;
+import com.land_management.user.status.UserStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Data
 public class UserUpdateRequest {
     @Id
     @GeneratedValue
-    private Long id;
-    private Long userId;
+    private UUID id;
+    private UUID userId;
     private String firstName;
 
     @Enumerated(EnumType.STRING)
-    private UpdateRequestStatus status= UpdateRequestStatus.PENDING;
+    private UserStatus status= UserStatus.PENDING;
 
     private String middleName;
 
