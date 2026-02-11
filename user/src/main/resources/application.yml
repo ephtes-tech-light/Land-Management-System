@@ -1,6 +1,8 @@
 server:
   port: 8081
-
+grpc:
+  server:
+    port: 9090
 spring:
   # --- PostgreSQL Configuration (For User Profiles & Land Data) ---
   datasource:

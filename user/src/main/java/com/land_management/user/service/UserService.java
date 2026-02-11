@@ -71,6 +71,9 @@ public class UserService {
 
     }
 
+    public boolean isExistedById(UUID id){
+        return userRepository.existsById(id);
+    }
     @Transactional
     public UserUpdateRequest updateUserDto(UpdateUserDto dto){
         UserUpdateRequest ur=new UserUpdateRequest();
