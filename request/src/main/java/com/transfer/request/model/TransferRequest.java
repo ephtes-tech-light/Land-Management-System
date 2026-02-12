@@ -1,0 +1,25 @@
+package com.transfer.request.model;
+
+import com.transfer.request.enums.TransferStatus;
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Entity
+public class TransferRequest {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private UUID id;
+
+    private UUID parcelId;
+    private UUID fromOwnerId;
+    private UUID toOwnerId;
+
+    @Enumerated(EnumType.STRING)
+    private TransferStatus status;
+
+    private String reason;
+    private UUID createdBy;
+    private LocalDateTime createdAt;
+}
