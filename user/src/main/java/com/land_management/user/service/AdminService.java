@@ -7,7 +7,7 @@ import com.land_management.user.model.User;
 import com.land_management.user.model.UserUpdateRequest;
 import com.land_management.user.repo.UpdateRepo;
 import com.land_management.user.repo.UserRepo;
-import com.land_management.user.status.UpdateRequestStatus;
+import com.land_management.user.status.UserStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,27 +27,27 @@ public class AdminService {
         UserUpdateRequest request = updateRepo.findById(requestId)
                 .orElseThrow(() -> new NotFoundException("Update request not found"));
 
-        if (request.getStatus()== UpdateRequestStatus.APPROVED ||
-                request.getStatus()==UpdateRequestStatus.REJECTED) {
+        if (request.getStatus()== UserStatus.APPROVED ||
+                request.getStatus()== UserStatus.REJECTED) {
             throw new IllegalStateException("Update request already processed");
         }
 
-        request.setStatus(UpdateRequestStatus.REJECTED);
+        request.setStatus(UserStatus.REJECTED);
         request.setUpdatedAt(LocalDateTime.now());
         updateRepo.save(request);
         return "Rejected Successfully";
     }
 
     public List<UserUpdateRequest> getPending(){
-        return updateRepo.findByStatus(UpdateRequestStatus.PENDING);
+        return updateRepo.findByStatus(UserStatus.PENDING);
     }
 
     @Transactional
     public UserResponseDto approveUserUpdate(Long requestId){
         UserUpdateRequest userUpdateRequest=updateRepo.findById(requestId).orElseThrow(
                 ()->new NotFoundException("User Not Found"));
-        if (userUpdateRequest.getStatus()== UpdateRequestStatus.APPROVED ||
-                userUpdateRequest.getStatus()==UpdateRequestStatus.REJECTED){
+        if (userUpdateRequest.getStatus()== UserStatus.APPROVED ||
+                userUpdateRequest.getStatus()== UserStatus.REJECTED){
             throw new IllegalStateException("Update request already processed");
         }
         User user=userRepo.findById(requestId).orElseThrow(()->
@@ -60,7 +60,7 @@ public class AdminService {
         user.setNationalId(userUpdateRequest.getNationalId());
         userRepo.save(user);
 
-        userUpdateRequest.setStatus(UpdateRequestStatus.APPROVED);
+        userUpdateRequest.setStatus(UserStatus.APPROVED);
         userUpdateRequest.setUpdatedAt(LocalDateTime.now());
         updateRepo.save(userUpdateRequest);
         return UserMapper.toResponse(user);
@@ -68,7 +68,7 @@ public class AdminService {
     }
     public String approveUser(Long id){
         User user=userRepo.findById(id).orElseThrow(()->new NotFoundException("User not found"));
-        user.setStatus(UpdateRequestStatus.APPROVED);
+        user.setStatus(UserStatus.APPROVED);
         userRepo.save(user);
         return "Approved Successfully";
     }

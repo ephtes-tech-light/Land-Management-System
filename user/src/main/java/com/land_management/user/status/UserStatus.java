@@ -1,7 +1,8 @@
 package com.land_management.user.status;
 
-public enum UpdateRequestStatus {
+public enum UserStatus {
     PENDING,
     APPROVED,
-    REJECTED
+    REJECTED,
+    SUSPENDED
 }

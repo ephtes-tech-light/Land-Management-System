@@ -1,0 +1,31 @@
+syntax="proto3";
+package user;
+option java_package="com.land_management.user.grpc";
+option java_multiple_files=true;
+
+service UserGrpcService{
+  rpc ValidateUser (UserValidationRequest)
+      returns (UserValidationResponse);
+  rpc GetUserById (GetUserRequest)
+      returns (UserResponse);
+}
+message UserValidationRequest{
+  string userId=1;
+}
+message GetUserRequest{
+  string userId=1;
+}
+message UserValidationResponse{
+  bool exists=1;
+  bool approved=2;
+}
+message UserResponse{
+  string userId=1;
+  string firstName = 2;
+  string middleName = 3;
+  string lastName = 4;
+  string nationalId = 5;
+  string phoneNumber = 6;
+  string role = 7;
+  string status = 8;
+}

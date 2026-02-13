@@ -3,7 +3,6 @@ package com.land_management.user.service;
 
 import com.land_management.user.dto.RegistrationDto;
 import com.land_management.user.dto.UpdateUserDto;
-import com.land_management.user.dto.UserResponseDto;
 import com.land_management.user.exception.DuplicateResourceException;
 import com.land_management.user.exception.NotFoundException;
 import com.land_management.user.mapper.UserMapper;
@@ -11,7 +10,7 @@ import com.land_management.user.model.User;
 import com.land_management.user.model.UserUpdateRequest;
 import com.land_management.user.repo.UpdateRepo;
 import com.land_management.user.repo.UserRepo;
-import com.land_management.user.status.UpdateRequestStatus;
+import com.land_management.user.status.UserStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 
 @Slf4j
@@ -67,7 +65,15 @@ public class UserService {
         }
 
     }
+    public boolean isApprovedUser(UUID id){
+        User user=userRepository.findById(id).orElseThrow(()->new RuntimeException("User not approved"));
+        return user.getStatus()== UserStatus.APPROVED&&!user.isDeleted();
 
+    }
+
+    public boolean isExistedById(UUID id){
+        return userRepository.existsById(id);
+    }
     @Transactional
     public UserUpdateRequest updateUserDto(UpdateUserDto dto){
         UserUpdateRequest ur=new UserUpdateRequest();

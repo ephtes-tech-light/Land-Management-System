@@ -1,6 +1,6 @@
 package com.land_management.user.model;
 
-import com.land_management.user.status.UpdateRequestStatus;
+import com.land_management.user.status.UserStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long userId;
+    private UUID userId;
 
     @Column(unique = true, nullable = false)
     private String keycloakId;
@@ -46,6 +47,9 @@ public class User {
     @Column(nullable = false)
     private String address;
 
+    @Column(nullable = false)
+    private boolean deleted;
+
     @Builder.Default
     @Column(nullable = false)
     private String role="USER";
@@ -53,7 +57,7 @@ public class User {
     @Builder.Default
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private UpdateRequestStatus status = UpdateRequestStatus.PENDING;
+    private UserStatus status = UserStatus.PENDING;
 
 
     @Builder.Default
@@ -62,5 +66,6 @@ public class User {
 
     @Column(unique = true, nullable = false, length = 12)
     private String nationalId;
+    private LocalDateTime approvedAt;
 
 }
