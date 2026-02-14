@@ -15,16 +15,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class OwnershipController {
     private final OwnershipService ownershipService;
-
-    @PostMapping("/individual")
-    public ResponseEntity<?> createIndividualOwnership(
-            @RequestBody CreateOwnershipRequest request) {
-
-        Ownership ownership = ownershipService
-                .createIndividualOwnership(
-                        request.getParcelId(),
-                        request.getUserId()
-                );
-
-        return ResponseEntity.ok(ownership.getOwnershipId());
-}}
+}

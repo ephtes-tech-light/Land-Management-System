@@ -1,6 +1,7 @@
 package com.ownership.service.service;
 
 
+import com.ownership.service.dto.CreateOwnershipRequest;
 import com.ownership.service.enums.HolderRole;
 import com.ownership.service.enums.OwnershipStatus;
 import com.ownership.service.enums.TenureType;
@@ -22,17 +23,20 @@ public class OwnershipService {
       //  private final EventPublisher eventPublisher;  do it later
 
     @Transactional
-    public Ownership createIndividualOwnership(
-            UUID parcelId, UUID userId) {
+    public Ownership createIndividualOwnership(CreateOwnershipRequest cw) {
+        if (ownershipRepo.existsByParcelIdAndStatus(cw.getParcelId(), OwnershipStatus.ACTIVE)){
+            throw new IllegalStateException("Active ownership already exists");
+        }
 
         Ownership ownership = new Ownership();
-        ownership.setParcelId(parcelId);
+        ownership.setParcelId(cw.getParcelId());
         ownership.setTenureType(TenureType.INDIVIDUAL);
         ownership.setStatus(OwnershipStatus.ACTIVE);
         ownership.setStartDate(LocalDate.now());
+        ownership.setLegalBasis(cw.getLegalBasis());
 
         OwnershipHolder holder = new OwnershipHolder();
-        holder.setUserId(userId);
+        holder.setUserId(cw.getUserId());
         holder.setRole(HolderRole.OWNER);
         holder.setSharePercentage(100.0);
         holder.setOwnership(ownership);
@@ -41,8 +45,24 @@ public class OwnershipService {
 
         Ownership saved = ownershipRepo.save(ownership);
         //   eventPublisher.publishOwnershipCreated(saved); do it later
-
         return saved;
+        }
+
+        @Transactional
+        public Ownership updateIndividualOwnership() {
+            Ownership currentOwnership=ownershipRepo.findById(fromOwner).orElseThrow(null);
+            currentOwnership.setStatus(OwnershipStatus.TRANSFERRED);
+            currentOwnership.setEndDate(LocalDate.now());
+
+            Ownership newOwnership=new Ownership();
+            newOwnership.setParcelId(parcelId);
+            newOwnership.setTenureType(TenureType.INDIVIDUAL);
+            newOwnership.setStatus(OwnershipStatus.ACTIVE);
+            newOwnership.setStartDate(LocalDate.now());
+            newOwnership.setOwnershipId(toOwner);
+            newOwnership
+            ownershipRepo.save(currentOwnership);
+
         }
     }
 

@@ -7,11 +7,10 @@ import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
 @Entity
+@Data
 public class TransferRequest {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
 
     private UUID parcelId;

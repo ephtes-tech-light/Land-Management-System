@@ -8,12 +8,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import tools.jackson.databind.JsonNode;
 
+import java.util.UUID;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class LandResponseDto {
-    private Long landId;
+    private UUID landId;
     private String region;
     private String zone;
     private String woreda;

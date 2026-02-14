@@ -13,4 +13,6 @@ public interface  OwnershipRepository extends JpaRepository<Ownership, UUID> {
     Optional<Ownership> findByParcelIdAndStatus(
             UUID parcelId, OwnershipStatus status
     );
+
+    boolean existsByParcelIdAndStatus(UUID parcelId, OwnershipStatus status);
 }

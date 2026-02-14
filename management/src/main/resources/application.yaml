@@ -1,6 +1,6 @@
 spring:
   application:
-    name: parcel
+    name: parcel-registration
   datasource:
     url: jdbc:postgresql://localhost:5433/gisdb
     username: admin
@@ -17,4 +17,4 @@ spring:
         format_sql: true
 
 server:
-  port: 8085
+  port: 8084

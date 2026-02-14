@@ -8,12 +8,12 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-public interface LandRepo extends JpaRepository<Land,Long> {
-    Optional<Land> findByLandIdAndDeletedFalse(Long id);
+public interface LandRepo extends JpaRepository<Land, UUID> {
+    Optional<Land> findByLandIdAndDeletedFalse(UUID id);
 
     List<Land> findAllByDeletedFalse();
-
     @Query(value = """
         SELECT EXISTS (
             SELECT 1

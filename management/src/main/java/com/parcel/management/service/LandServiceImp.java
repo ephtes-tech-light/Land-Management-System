@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.JsonNode;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +53,7 @@ public class LandServiceImp implements LandService  {
     }
 
     @Override
-    public LandResponseDto getLand(Long id) {
+    public LandResponseDto getLand(UUID id) {
         Land land= landRepo.findByLandIdAndDeletedFalse(id).orElseThrow(()->
                 new ResourceNotFoundException("Land not found with id: {}"+id));
         return landMapper.toDto(land);
@@ -65,7 +66,7 @@ public class LandServiceImp implements LandService  {
     }
 
     @Override
-    public LandResponseDto updateLand(Long id, LandRequestDto dto) {
+    public LandResponseDto updateLand(UUID id, LandRequestDto dto) {
         Land land=landRepo.findByLandIdAndDeletedFalse(id).orElseThrow(
                 ()->new ResourceNotFoundException("Land not found with id: {}"+id)
         );

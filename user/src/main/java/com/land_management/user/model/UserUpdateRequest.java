@@ -11,7 +11,6 @@ import java.util.UUID;
 @Data
 public class UserUpdateRequest {
     @Id
-    @GeneratedValue
     private UUID id;
     private UUID userId;
     private String firstName;

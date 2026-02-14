@@ -15,7 +15,6 @@ import java.util.UUID;
 @Table(name = "ownership")
 public class Ownership {
     @Id
-    @GeneratedValue
     private UUID ownershipId;
 
     @Column(nullable = false)

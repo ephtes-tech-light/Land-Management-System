@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.locationtech.jts.geom.MultiPolygon;
 
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -17,8 +18,7 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 public class Land {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long landId;
+    private UUID landId;
 
     @Column(nullable = false)
     private String region;

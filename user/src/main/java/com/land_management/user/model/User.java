@@ -18,7 +18,6 @@ import java.util.UUID;
 @Table(name = "AppUser")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private UUID userId;
 
     @Column(unique = true, nullable = false)
