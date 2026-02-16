@@ -9,7 +9,15 @@
         <option value="$PROJECT_DIR$/service/pom.xml" />
         <option value="$PROJECT_DIR$/request/pom.xml" />
         <option value="$PROJECT_DIR$/common-contract/pom.xml" />
+        <option value="$PROJECT_DIR$/land-contract/pom.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/common-contract/pom.xml" />
+        <option value="$PROJECT_DIR$/land-contract/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="ms-21" project-jdk-type="JavaSDK">
