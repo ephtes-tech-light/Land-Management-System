@@ -7,6 +7,13 @@ spring:
     password: "1234"
     driver-class-name: org.postgresql.Driver
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/land-management
+
+
   jpa:
     database-platform: org.hibernate.spatial.dialect.postgis.PostgisPG10Dialect
     hibernate:

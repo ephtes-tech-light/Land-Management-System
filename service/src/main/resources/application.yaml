@@ -5,6 +5,13 @@ eureka:
 spring:
   application:
     name: ownership-service
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/land-management
+
   kafka:
     bootstrap-servers: localhost:9092
 

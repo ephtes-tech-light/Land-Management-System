@@ -7,6 +7,12 @@ spring:
     password: my_password
     driver-class-name: org.postgresql.Driver
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/land-management
+
   jpa:
     hibernate:
       ddl-auto: update
