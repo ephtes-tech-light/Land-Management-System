@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,7 +24,7 @@ public class AdminService {
     private final UserRepo userRepo;
 
     @Transactional
-    public String rejectUpdateRequest(Long requestId) {
+    public String rejectUpdateRequest(UUID requestId) {
         UserUpdateRequest request = updateRepo.findById(requestId)
                 .orElseThrow(() -> new NotFoundException("Update request not found"));
 
@@ -43,7 +44,7 @@ public class AdminService {
     }
 
     @Transactional
-    public UserResponseDto approveUserUpdate(Long requestId){
+    public UserResponseDto approveUserUpdate(UUID requestId){
         UserUpdateRequest userUpdateRequest=updateRepo.findById(requestId).orElseThrow(
                 ()->new NotFoundException("User Not Found"));
         if (userUpdateRequest.getStatus()== UserStatus.APPROVED ||
@@ -66,14 +67,14 @@ public class AdminService {
         return UserMapper.toResponse(user);
 
     }
-    public String approveUser(Long id){
+    public String approveUser(UUID id){
         User user=userRepo.findById(id).orElseThrow(()->new NotFoundException("User not found"));
         user.setStatus(UserStatus.APPROVED);
         userRepo.save(user);
         return "Approved Successfully";
     }
 
-    public UserResponseDto getUserById(Long id){
+    public UserResponseDto getUserById(UUID id){
         User user=userRepo.findById(id)
                 .orElseThrow(()->new NotFoundException("User Not Found"));
         return UserMapper.toResponse(user);

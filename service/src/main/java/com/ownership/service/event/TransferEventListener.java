@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class TransferEventListener {
+
     OwnershipService ownershipService;
+
     @KafkaListener(topics = "transfer-approved",groupId = "ownership-group")
     public void handleTransferApproved(TransferApprovedEvent transferApprovedEvent) {
         ownershipService.updateIndividualOwnership(transferApprovedEvent);

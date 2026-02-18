@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -18,7 +19,7 @@ public class AdminController {
 
 
     @PutMapping("/reject/{id}")
-    public ResponseEntity<String> reject(@PathVariable Long id){
+    public ResponseEntity<String> reject(@PathVariable UUID id){
         return ResponseEntity.ok(adminService.rejectUpdateRequest(id));
     }
 
@@ -28,17 +29,17 @@ public class AdminController {
     }
 
     @PutMapping("/approveUserUpdate/{id}")
-    public ResponseEntity<UserResponseDto> approve(@PathVariable Long id){
+    public ResponseEntity<UserResponseDto> approve(@PathVariable UUID id){
         return ResponseEntity.ok(adminService.approveUserUpdate(id));
     }
 
     @PutMapping("/approveUser/{id}")
-    public ResponseEntity<String> approveUser(@PathVariable Long id){
+    public ResponseEntity<String> approveUser(@PathVariable UUID id){
         return new ResponseEntity<>(adminService.approveUser(id), HttpStatus.OK);
     }
 
     @GetMapping("/getbyid/{id}")
-    public ResponseEntity<UserResponseDto> getById(@PathVariable Long id){
+    public ResponseEntity<UserResponseDto> getById(@PathVariable UUID id){
         return ResponseEntity.ok(adminService.getUserById(id));
     }
 

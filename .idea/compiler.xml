@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="registry" />
+        <module name="gateway" />
         <module name="contract" />
       </profile>
       <profile name="Annotation profile for land-management" enabled="true">
@@ -30,6 +31,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="gateway" options="-parameters" />
       <module name="management" options="-parameters" />
       <module name="registry" options="-parameters" />
       <module name="request" options="-parameters" />

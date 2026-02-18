@@ -1,9 +1,16 @@
 server:
   port: 8081
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
 grpc:
   server:
     port: 9090
 spring:
+  application:
+    name: "User-Management"
   web:
     resources:
       add-mappings: true

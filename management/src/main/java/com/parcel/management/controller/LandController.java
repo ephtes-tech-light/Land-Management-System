@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/land")
@@ -23,7 +24,7 @@ public class LandController {
     }
 
     @GetMapping("/getLand/{id}")
-    public ResponseEntity<LandResponseDto> getLand(@PathVariable Long id){
+    public ResponseEntity<LandResponseDto> getLand(@PathVariable UUID id){
         return ResponseEntity.ok(landService.getLand(id));
     }
 
@@ -33,12 +34,12 @@ public class LandController {
     }
 
     @PutMapping("/updateLand/{id}")
-    public ResponseEntity<LandResponseDto> updateLand(@RequestBody LandRequestDto landRequestDto, @PathVariable Long id){
+    public ResponseEntity<LandResponseDto> updateLand(@RequestBody LandRequestDto landRequestDto, @PathVariable UUID id){
         return ResponseEntity.ok(landService.updateLand(id, landRequestDto));
     }
 
     @DeleteMapping("/deleteLand/{id}")
-    public ResponseEntity<Void> deleteLand(@PathVariable Long id){
+    public ResponseEntity<Void> deleteLand(@PathVariable UUID id){
         landService.deleteLand(id);
         return  ResponseEntity.noContent().build();
     }

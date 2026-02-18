@@ -95,7 +95,7 @@ public class LandServiceImp implements LandService  {
     }
 
     @Override
-    public void deleteLand(Long id) {
+    public void deleteLand(UUID id) {
         Land land=landRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("Land not found with id: {}"+id));
         land.setDeleted(true);
         landRepo.save(land);
