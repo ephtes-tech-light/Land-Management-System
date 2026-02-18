@@ -1,6 +1,7 @@
 package com.ownership.service.service;
 
 
+import com.land.events.TransferApprovedEvent;
 import com.ownership.service.dto.CreateOwnershipRequest;
 import com.ownership.service.enums.HolderRole;
 import com.ownership.service.enums.OwnershipStatus;
@@ -44,23 +45,30 @@ public class OwnershipService {
         ownership.getHolders().add(holder);
 
         Ownership saved = ownershipRepo.save(ownership);
-        //   eventPublisher.publishOwnershipCreated(saved); do it later
+        //eventPublisher.publishOwnershipCreated(saved); do it later
         return saved;
         }
 
         @Transactional
-        public Ownership updateIndividualOwnership() {
-            Ownership currentOwnership=ownershipRepo.findById(fromOwner).orElseThrow(null);
+        public void updateIndividualOwnership(TransferApprovedEvent transferEventApprovedEvent) {
+            Ownership currentOwnership=ownershipRepo.findById(transferEventApprovedEvent.getSellerId()).orElseThrow(null);
             currentOwnership.setStatus(OwnershipStatus.TRANSFERRED);
             currentOwnership.setEndDate(LocalDate.now());
 
             Ownership newOwnership=new Ownership();
-            newOwnership.setParcelId(parcelId);
+            newOwnership.setParcelId(transferEventApprovedEvent.getParcelId());
             newOwnership.setTenureType(TenureType.INDIVIDUAL);
             newOwnership.setStatus(OwnershipStatus.ACTIVE);
             newOwnership.setStartDate(LocalDate.now());
-            newOwnership.setOwnershipId(toOwner);
-            newOwnership
+            newOwnership.setLegalBasis("transfered: "+transferEventApprovedEvent.getTransferId());
+
+            OwnershipHolder holder = new OwnershipHolder();
+            holder.setUserId(transferEventApprovedEvent.getBuyerId());
+            holder.setRole(HolderRole.OWNER);
+            holder.setSharePercentage(100.0);
+            holder.setOwnership(newOwnership);
+            newOwnership.getHolders().add(holder);
+
             ownershipRepo.save(currentOwnership);
 
         }

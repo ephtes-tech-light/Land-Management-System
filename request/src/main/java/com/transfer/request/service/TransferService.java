@@ -1,9 +1,11 @@
 package com.transfer.request.service;
 
+import com.land.events.TransferApprovedEvent;
 import com.transfer.request.dto.RequestDto;
 import com.transfer.request.enums.ApprovalRole;
 import com.transfer.request.enums.ApprovalStatus;
 import com.transfer.request.enums.TransferStatus;
+import com.transfer.request.event.TransferEventPublisher;
 import com.transfer.request.model.TransferApproval;
 import com.transfer.request.model.TransferRequest;
 import com.transfer.request.repo.TransferAppRepo;
@@ -12,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -19,6 +22,7 @@ import java.util.UUID;
 public class TransferService {
     private final TransferAppRepo transferAppRepo;
     private final TransferReqRepo transferReqRepo;
+    private final TransferEventPublisher transferEventPublisher;
 
     public TransferRequest createTransfer(RequestDto dto) {
         TransferRequest tr = new TransferRequest();
@@ -33,10 +37,17 @@ public class TransferService {
         return transferReqRepo.save(tr);
     }
 
+    public List<TransferRequest> listRequestedTransfer(){
+        return transferReqRepo.findByStatus(TransferStatus.PENDING_SUBCITY);
+    }
+    public List<TransferRequest> listPemdingCityTransferRequest(){
+        return transferReqRepo.findByStatus(TransferStatus.PENDING_CITY);
+    }
+
     public TransferRequest approve(UUID approverId, UUID transferId, ApprovalRole approvalRole, boolean approved, String comment) {
 
 
-        TransferRequest tRequest = transferReqRepo.findById(approverId).orElse(null);
+        TransferRequest tRequest = transferReqRepo.findById(transferId).orElse(null);
 
         if (tRequest.getStatus() == TransferStatus.APPROVED ||
                 tRequest.getStatus() == TransferStatus.REJECTED) {
@@ -52,23 +63,27 @@ public class TransferService {
 
         if (!approved) {
             tRequest.setStatus(TransferStatus.REJECTED);
-        } else {
-            if (approvalRole == ApprovalRole.SUBCITY &&
+            transferReqRepo.save(tRequest);
+            return tRequest;
+        }
+        if (approvalRole == ApprovalRole.SUBCITY &&
                     tRequest.getStatus() == TransferStatus.PENDING_SUBCITY) {
 
                 tRequest.setStatus(TransferStatus.PENDING_CITY);
-
-            } else if (approvalRole == ApprovalRole.CITY &&
+            }
+        if (approvalRole == ApprovalRole.CITY &&
                     tRequest.getStatus() == TransferStatus.PENDING_CITY) {
 
-                tRequest.setStatus(TransferStatus.APPROVED);
+            tRequest.setStatus(TransferStatus.APPROVED);
+            TransferApprovedEvent transferApprovedEvent=new TransferApprovedEvent(
+                    tRequest.getId(), tRequest.getParcelId(),tRequest.getFromOwnerId(), tRequest.getToOwnerId(),LocalDateTime.now()
+            );
+            transferEventPublisher.transferApproveEventPublish(transferApprovedEvent);
 
             } else {
                 throw new IllegalStateException("Invalid approval state");
             }
-            transferReqRepo.save(tRequest);
-
+            return transferReqRepo.save(tRequest);
         }
-        return tRequest;
+
     }
-}

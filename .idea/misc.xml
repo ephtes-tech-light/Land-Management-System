@@ -11,6 +11,7 @@
         <option value="$PROJECT_DIR$/common-contract/pom.xml" />
         <option value="$PROJECT_DIR$/land-contract/pom.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/registry/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

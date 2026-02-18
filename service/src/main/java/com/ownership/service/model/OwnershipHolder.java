@@ -12,7 +12,6 @@ import java.util.UUID;
 public class OwnershipHolder {
 
     @Id
-    @GeneratedValue
     private UUID holderId;
 
     @Column(nullable = false)
